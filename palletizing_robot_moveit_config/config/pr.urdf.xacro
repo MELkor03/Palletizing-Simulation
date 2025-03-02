@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pr">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import pr urdf file -->
+    <xacro:include filename="$(find palletizing_robot_description)/urdf/palletizing_robot.urdf.xacro" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="pr.ros2_control.xacro" />
+
+
+    <xacro:pr_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot>

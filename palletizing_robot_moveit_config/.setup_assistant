@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: palletizing_robot_description
+    relative_path: urdf/palletizing_robot.urdf.xacro
+  srdf:
+    relative_path: config/pr.srdf
+  package_settings:
+    author_name: Grzegorz Kozera
+    author_email: 01171661@pw.edu.pl
+    generated_timestamp: 1740864310
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
