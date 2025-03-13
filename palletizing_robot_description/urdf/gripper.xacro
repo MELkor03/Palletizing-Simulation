@@ -7,7 +7,7 @@
         <color rgba="0.8 0.8 0.8 1"/>
     </material>
 
-    <xacro:property name="gripper_mesh" value="file://$(find palletizing_robot_description)/meshes/powerpick10-x200.dae" />
+    <xacro:property name="gripper_mesh" value="file://$(find palletizing_robot_description)/meshes/powerpick10-x200-small.dae" />
 
 
     <xacro:macro name="gripper" params = "
