@@ -20,7 +20,7 @@ def generate_launch_description():
     urdf_file = os.path.join(description_package, 'urdf', 'palletizing_robot.urdf.xacro')
     controller_file = os.path.join(get_package_share_directory('palletizing_robot_gazebo'), 'config', 'controller.yaml')
     gazebo_launch_file = os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')
-    world_file = os.path.join(get_package_share_directory('palletizing_robot_gazebo'), 'worlds', 'test_world.world')
+    world_file = os.path.join(get_package_share_directory('palletizing_robot_gazebo'), 'worlds', 'robot_environment.world')
     robot_description = Command(['xacro ', urdf_file])
 
     moveit_config = (
