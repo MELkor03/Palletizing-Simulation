@@ -23,42 +23,13 @@ int main(int argc, char * argv[])
   using moveit::planning_interface::MoveGroupInterface;
   auto move_group_interface = MoveGroupInterface(node, "arm");
 
-  // Collision Objects
-  std::vector<moveit_msgs::msg::CollisionObject> collision_objects;
-  collision_objects.resize(2);
-
-  collision_objects[0].id = "floor";
-  collision_objects[0].header.frame_id = "world";
-  collision_objects[0].primitives.resize(1);
-  collision_objects[0].primitives[0].type = shape_msgs::msg::SolidPrimitive::BOX;
-  collision_objects[0].primitives[0].dimensions = {4, 4, 0.02};
-  collision_objects[0].primitive_poses.resize(1);
-  collision_objects[0].primitive_poses[0].position.x = 0.0;
-  collision_objects[0].primitive_poses[0].position.y = 0.0;
-  collision_objects[0].primitive_poses[0].position.z = -0.01;
-  collision_objects[0].operation = moveit_msgs::msg::CollisionObject::ADD;
-
-  collision_objects[1].id = "box";
-  collision_objects[1].header.frame_id = "world";
-  collision_objects[1].primitives.resize(1);
-  collision_objects[1].primitives[0].type = shape_msgs::msg::SolidPrimitive::BOX;
-  collision_objects[1].primitives[0].dimensions = {0.3, 0.4, 0.2};
-  collision_objects[1].primitive_poses.resize(1);
-  collision_objects[1].primitive_poses[0].position.x = 1.0;
-  collision_objects[1].primitive_poses[0].position.y = 0.0;
-  collision_objects[1].primitive_poses[0].position.z = 0.1;
-  collision_objects[1].operation = moveit_msgs::msg::CollisionObject::ADD;
-
-  moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
-  planning_scene_interface.applyCollisionObjects(collision_objects);
-
   // Set a pick and place Pose
   auto const pick_pose = []{
     geometry_msgs::msg::Pose msg;
     msg.orientation.w = 1.0;
     msg.position.x = 1.0;
     msg.position.y = 0.0;
-    msg.position.z = 0.201;
+    msg.position.z = 0.701;
     return msg;
   }();
 
@@ -68,7 +39,7 @@ int main(int argc, char * argv[])
     msg.orientation.w = 0.7073883;
     msg.position.x = 0.0;
     msg.position.y = -1.0;
-    msg.position.z = 0.4;
+    msg.position.z = 0.245;
     return msg;
   }();
 
@@ -85,7 +56,7 @@ int main(int argc, char * argv[])
   
   // Link attach clinet
   if(success_1){
-    move_group_interface.attachObject("box", "wrist_3_link");
+    move_group_interface.attachObject("Box_1", "wrist_3_link");
     auto attach_client = node->create_client<linkattacher_msgs::srv::AttachLink>("/ATTACHLINK");
 
     while (!attach_client->wait_for_service(std::chrono::seconds(2))) {
@@ -94,8 +65,8 @@ int main(int argc, char * argv[])
     auto attach_request = std::make_shared<linkattacher_msgs::srv::AttachLink::Request>();
     attach_request->model1_name = "pr";
     attach_request->link1_name = "wrist_3_link";
-    attach_request->model2_name = "test_box";
-    attach_request->link2_name = "link_2";
+    attach_request->model2_name = "small_box";
+    attach_request->link2_name = "link";
     auto attach_future = attach_client->async_send_request(attach_request);
     if (rclcpp::spin_until_future_complete(node, attach_future) == rclcpp::FutureReturnCode::SUCCESS) {
         RCLCPP_INFO(node->get_logger(), "Object attached");
@@ -117,7 +88,7 @@ int main(int argc, char * argv[])
   move_group_interface.execute(plan_2);
 
   if(success_2){
-    move_group_interface.detachObject("box");
+    move_group_interface.detachObject("Box_1");
     auto detach_client = node->create_client<linkattacher_msgs::srv::DetachLink>("/DETACHLINK");
     while (!detach_client->wait_for_service(std::chrono::seconds(2))) {
         RCLCPP_WARN(node->get_logger(), "Waiting for service /DETACHLINK...");
@@ -125,8 +96,8 @@ int main(int argc, char * argv[])
     auto detach_request = std::make_shared<linkattacher_msgs::srv::DetachLink::Request>();
     detach_request->model1_name = "pr";
     detach_request->link1_name = "wrist_3_link";
-    detach_request->model2_name = "test_box";
-    detach_request->link2_name = "link_2";
+    detach_request->model2_name = "small_box";
+    detach_request->link2_name = "link";
     auto detach_future = detach_client->async_send_request(detach_request);
     if (rclcpp::spin_until_future_complete(node, detach_future) == rclcpp::FutureReturnCode::SUCCESS) {
         RCLCPP_INFO(node->get_logger(), "Obiect detached");

@@ -3,6 +3,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
+#include "collision_environment.hpp"
 
 int main(int argc, char * argv[])
 {
@@ -26,39 +27,15 @@ int main(int argc, char * argv[])
     msg.orientation.w = 1.0;
     msg.position.x = 1.0;
     msg.position.y = 0.0;
-    msg.position.z = 0.201;
+    msg.position.z = 0.701;
     return msg;
   }();
   move_group_interface.setPoseTarget(target_pose);
 
   // Collision Objects
-  std::vector<moveit_msgs::msg::CollisionObject> collision_objects;
-  collision_objects.resize(2);
-
-  collision_objects[0].id = "floor";
-  collision_objects[0].header.frame_id = "world";
-  collision_objects[0].primitives.resize(1);
-  collision_objects[0].primitives[0].type = shape_msgs::msg::SolidPrimitive::BOX;
-  collision_objects[0].primitives[0].dimensions = {4, 4, 0.02};
-  collision_objects[0].primitive_poses.resize(1);
-  collision_objects[0].primitive_poses[0].position.x = 0.0;
-  collision_objects[0].primitive_poses[0].position.y = 0.0;
-  collision_objects[0].primitive_poses[0].position.z = -0.01;
-  collision_objects[0].operation = moveit_msgs::msg::CollisionObject::ADD;
-
-  collision_objects[1].id = "box";
-  collision_objects[1].header.frame_id = "world";
-  collision_objects[1].primitives.resize(1);
-  collision_objects[1].primitives[0].type = shape_msgs::msg::SolidPrimitive::BOX;
-  collision_objects[1].primitives[0].dimensions = {0.3, 0.4, 0.2};
-  collision_objects[1].primitive_poses.resize(1);
-  collision_objects[1].primitive_poses[0].position.x = 1.0;
-  collision_objects[1].primitive_poses[0].position.y = 0.0;
-  collision_objects[1].primitive_poses[0].position.z = 0.1;
-  collision_objects[1].operation = moveit_msgs::msg::CollisionObject::ADD;
-
-  moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
-  planning_scene_interface.applyCollisionObjects(collision_objects);
+  //moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
+  //collision_environment::generateCollisionEnviroment(planning_scene_interface);
+  
 
   // Create a plan to that target pose
   auto const [success, plan] = [&move_group_interface]{
@@ -73,6 +50,9 @@ int main(int argc, char * argv[])
   } else {
     RCLCPP_ERROR(logger, "Planing failed!");
   }
+
+  // psi, id, pose, dimensions
+  //collision_environment::addMoveitBox(planning_scene_interface, "Box_1", {1, 0, 0.65}, {0.2, 0.3, 0.1});
 
   // Shutdown ROS
   rclcpp::shutdown();
