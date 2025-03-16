@@ -62,7 +62,7 @@ void generateCollisionEnviroment(moveit::planning_interface::PlanningSceneInterf
 }
 
 void addMoveitBox(moveit::planning_interface::PlanningSceneInterface& psi, const std::string& id, 
-                  const std::array<double, 3>& position, const std::array<double, 3>& dimensions)
+                  const geometry_msgs::msg::Pose& pose, const std::array<double, 3>& dimensions)
 {
     moveit_msgs::msg::CollisionObject box;
 
@@ -72,11 +72,6 @@ void addMoveitBox(moveit::planning_interface::PlanningSceneInterface& psi, const
     shape_msgs::msg::SolidPrimitive primitive;
     primitive.type = shape_msgs::msg::SolidPrimitive::BOX;
     primitive.dimensions = {dimensions[0], dimensions[1], dimensions[2]};
-    
-    geometry_msgs::msg::Pose pose;
-    pose.position.x = position[0];
-    pose.position.y = position[1];
-    pose.position.z = position[2];
 
     box.primitives.push_back(primitive);
     box.primitive_poses.push_back(pose);
