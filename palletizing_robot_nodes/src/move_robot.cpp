@@ -4,6 +4,7 @@
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include "collision_environment.hpp"
+#include "robot_motion.hpp"
 
 int main(int argc, char * argv[])
 {
@@ -20,36 +21,48 @@ int main(int argc, char * argv[])
   // Create the MoveIt MoveGroup Interface
   using moveit::planning_interface::MoveGroupInterface;
   auto move_group_interface = MoveGroupInterface(node, "arm");
-
-  // Set a target Pose
-  auto const target_pose = []{
-    geometry_msgs::msg::Pose msg;
-    msg.orientation.w = 1.0;
-    msg.position.x = 1.0;
-    msg.position.y = 0.0;
-    msg.position.z = 0.701;
-    return msg;
-  }();
-  move_group_interface.setPoseTarget(target_pose);
-
-  // Collision Objects
-  //moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
-  //collision_environment::generateCollisionEnviroment(planning_scene_interface);
+  // moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
+  // collision_environment::generateCollisionEnviroment(planning_scene_interface);
   
+  geometry_msgs::msg::Pose target_pose_1;
+  target_pose_1.orientation.w = 1.0;
+  target_pose_1.position.x = 1.0;
+  target_pose_1.position.y = 0.0;
+  target_pose_1.position.z = 1.01;
 
-  // Create a plan to that target pose
-  auto const [success, plan] = [&move_group_interface]{
-    moveit::planning_interface::MoveGroupInterface::Plan msg;
-    auto const ok = static_cast<bool>(move_group_interface.plan(msg));
-    return std::make_pair(ok, msg);
-  }();
+  geometry_msgs::msg::Pose target_pose_2;
+  target_pose_2.orientation.w = 1.0;
+  target_pose_2.position.x = 1.0;
+  target_pose_2.position.y = 0.0;
+  target_pose_2.position.z = 0.701;
 
-  // Execute the plan
-  if(success) {
-    move_group_interface.execute(plan);
-  } else {
-    RCLCPP_ERROR(logger, "Planing failed!");
-  }
+  geometry_msgs::msg::Pose target_pose_3;
+  target_pose_3.orientation.z = -0.7068252;
+  target_pose_3.orientation.w = 0.7073883;
+  target_pose_3.position.x = 0.0;
+  target_pose_3.position.y = -1.0;
+  target_pose_3.position.z = 0.54;
+
+  geometry_msgs::msg::Pose target_pose_4;
+  target_pose_4.orientation.z = -0.7068252;
+  target_pose_4.orientation.w = 0.7073883;
+  target_pose_3.position.x = 0.0;
+  target_pose_4.position.y = -1.0;
+  target_pose_4.position.z = 0.245;
+
+  robot_motion::moveInCartesianPath(move_group_interface, target_pose_1);
+  rclcpp::sleep_for(std::chrono::milliseconds(500));
+  robot_motion::moveInCartesianPath(move_group_interface, target_pose_2);
+  rclcpp::sleep_for(std::chrono::milliseconds(500));
+  robot_motion::moveInCartesianPath(move_group_interface, target_pose_1);
+  rclcpp::sleep_for(std::chrono::milliseconds(500));
+  robot_motion::moveInCartesianPath(move_group_interface, target_pose_3);
+  rclcpp::sleep_for(std::chrono::milliseconds(500));
+  robot_motion::moveInCartesianPath(move_group_interface, target_pose_4);
+  rclcpp::sleep_for(std::chrono::milliseconds(500));
+  robot_motion::moveInCartesianPath(move_group_interface, target_pose_3);
+  rclcpp::sleep_for(std::chrono::milliseconds(500));
+  robot_motion::moveToHome(move_group_interface);
 
   // psi, id, pose, dimensions
   //collision_environment::addMoveitBox(planning_scene_interface, "Box_1", {1, 0, 0.65}, {0.2, 0.3, 0.1});
