@@ -15,10 +15,10 @@ To start the pick-and-place simulation, run the following command:
 ros2 launch palletizing_robot_moveit_config gazebo_moveit.launch.py 
 ```
 
-Wait for everything to initialize, then open a second terminal and run:
+Wait for everything to initialize, then open a second terminal and launch:
 
 ```
-ros2 run palletizing_robot_nodes pick_n_place 
+ros2 launch palletizing_robot_nodes pick_n_place.launch.py
 ```
 
 # Current Issues
