@@ -47,7 +47,6 @@ def generate_launch_description():
             'use_sim_time': 'true',
             'debug': 'false',
             'gui': 'true',
-            'paused': 'true',
             'world' : world_file,
         }.items()
     )
