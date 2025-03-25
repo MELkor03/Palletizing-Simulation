@@ -90,6 +90,7 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <model name='euro_pallet_A'>
+      <static>true</static>
       <link name='link'>
         <pose>0 0 0 0 -0 0</pose>
         <inertial>
@@ -142,6 +143,7 @@
       <pose>0.164569 -1.06886 0 0 -0 0</pose>
     </model>
     <model name='euro_pallet_B'>
+      <static>true</static>
       <link name='link'>
         <pose>0 0 0 0 -0 0</pose>
         <inertial>
@@ -194,6 +196,7 @@
       <pose>-0.083158 1.54149 0 0 -0 0</pose>
     </model>
     <model name='conveyor_belt'>
+      <static>true</static>
       <link name='link_0'>
         <inertial>
           <mass>50</mass>
