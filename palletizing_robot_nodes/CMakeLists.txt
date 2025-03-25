@@ -13,10 +13,12 @@ find_package(linkattacher_msgs REQUIRED)
 find_package(gazebo_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(ament_index_cpp REQUIRED)
+find_package(palletizing_robot_interfaces REQUIRED)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_executable(move_robot src/move_robot.cpp)
+add_executable(palletization_service src/palletization_service.cpp)
 add_executable(spawner src/spawner.cpp)
 add_executable(pick_n_place src/pick_n_place.cpp)
 target_include_directories(pick_n_place PUBLIC
@@ -43,9 +45,19 @@ ament_target_dependencies(
   "geometry_msgs" 
   "moveit_ros_planning_interface" 
   "ament_index_cpp"
+  "palletizing_robot_interfaces"
+)
+target_compile_features(palletization_service PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+ament_target_dependencies(
+  palletization_service
+  "linkattacher_msgs"
+  "moveit_ros_planning_interface"
+  "moveit_ros_planning_interface" 
+  "rclcpp"
+  "palletizing_robot_interfaces"
 )
 
-install(TARGETS move_robot pick_n_place spawner 
+install(TARGETS move_robot pick_n_place spawner palletization_service
   DESTINATION lib/${PROJECT_NAME})
 install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME})
