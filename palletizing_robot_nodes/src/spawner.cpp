@@ -1,5 +1,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <gazebo_msgs/srv/spawn_entity.hpp>
+#include <palletizing_robot_interfaces/srv/palletization.hpp> 
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <geometry_msgs/msg/pose.hpp>
 #include <chrono>
@@ -23,8 +24,12 @@ int main(int argc, char * argv[])
 
     // Creating client
     auto client = node->create_client<gazebo_msgs::srv::SpawnEntity>("/spawn_entity");
+    auto palletization_client = node->create_client<palletizing_robot_interfaces::srv::Palletization>("/Palletization");
     while (!client->wait_for_service(std::chrono::seconds(1))) {
         RCLCPP_WARN(node->get_logger(), "Waiting for service /spawn_entity...");
+    }
+    while (!palletization_client->wait_for_service(std::chrono::seconds(1))) {
+        RCLCPP_WARN(node->get_logger(), "Waiting for service /Palletization...");
     }
 
 
@@ -40,24 +45,35 @@ int main(int argc, char * argv[])
     pose.position.z = 0.65;
 
     auto request = std::make_shared<gazebo_msgs::srv::SpawnEntity::Request>();
+    auto palletization_request = std::make_shared<palletizing_robot_interfaces::srv::Palletization::Request>();
     request->xml = buffer.str();
+    request->initial_pose = pose;
     
-    for(int i=0; i<3; i++){
-        // Can be outside loop if position stays the same
-        request->initial_pose = pose;
-
+    for(int i=0; i<36; i++){
         std::string box_id = "Box_" + std::to_string(i + 1);
-        collision_environment::addMoveitBox(planning_scene_interface, box_id, pose, {0.2, 0.3, 0.1});
+        collision_environment::addMoveitBox(planning_scene_interface, box_id, pose, {0.18, 0.28, 0.1});
 
-        pose.position.x += 0.4;
+        // pose.position.x += 0.4;
         auto future = client->async_send_request(request);
         if (rclcpp::spin_until_future_complete(node, future) == rclcpp::FutureReturnCode::SUCCESS) {
             RCLCPP_INFO(logger, "Object spawned");
         } else {
             RCLCPP_ERROR(logger, "Faild to spawn object");
         }
+
+        palletization_request->counter = i;
+        if(i==0){ palletization_request->gazebo_name = "small_box"; }
+        else{ palletization_request->gazebo_name = "small_box_" + std::to_string(i - 1); }
+        palletization_request->moveit_name = box_id;
+
+        auto palletization_future = palletization_client->async_send_request(palletization_request);
+        if (rclcpp::spin_until_future_complete(node, palletization_future, std::chrono::seconds(40)) == rclcpp::FutureReturnCode::SUCCESS) {
+            RCLCPP_INFO(logger, "Pick place operation succesful");
+        } else {
+            RCLCPP_ERROR(logger, "Faild pick place operation");
+        }
         
-        if(i<2) { std::this_thread::sleep_for(std::chrono::seconds(10)); }
+        if(i<2) { std::this_thread::sleep_for(std::chrono::seconds(3)); }
     }
 
     //collision_environment::addMoveitBox(planning_scene_interface, "Box_1", {1, 0, 0.65}, {0.2, 0.3, 0.1});
