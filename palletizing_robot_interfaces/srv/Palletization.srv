@@ -2,5 +2,4 @@ int64 counter
 string gazebo_name
 string moveit_name
 ---
-bool success
 string log          

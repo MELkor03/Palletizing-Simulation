@@ -56,6 +56,22 @@ ament_target_dependencies(
   "rclcpp"
   "palletizing_robot_interfaces"
 )
+add_executable(joint_logger_node src/joint_logger_node.cpp)
+ament_target_dependencies(joint_logger_node rclcpp sensor_msgs)
+install(TARGETS
+  joint_logger_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+add_executable(end_effector_logger_node src/end_effector_logger_node.cpp)
+ament_target_dependencies(end_effector_logger_node
+  rclcpp
+  geometry_msgs
+  moveit_ros_planning_interface
+)
+install(TARGETS
+  end_effector_logger_node
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 install(TARGETS move_robot pick_n_place spawner palletization_service
   DESTINATION lib/${PROJECT_NAME})

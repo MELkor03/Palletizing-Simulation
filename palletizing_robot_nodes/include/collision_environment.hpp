@@ -30,12 +30,12 @@ void generateCollisionEnviroment(moveit::planning_interface::PlanningSceneInterf
     collision_objects[1].primitives[0].dimensions = {1.2, 0.8, 0.144};
     collision_objects[1].primitive_poses.resize(1);
     collision_objects[1].primitive_poses[0].position.x = 0.0;
-    collision_objects[1].primitive_poses[0].position.y = 1.0;
+    collision_objects[1].primitive_poses[0].position.y = -0.9;
     collision_objects[1].primitive_poses[0].position.z = 0.072;
     collision_objects[1].operation = moveit_msgs::msg::CollisionObject::ADD;
 
     // Euro pallet B
-    collision_objects[2].id = "euro_pallet_B";
+    /*collision_objects[2].id = "euro_pallet_B";
     collision_objects[2].header.frame_id = "world";
     collision_objects[2].primitives.resize(1);
     collision_objects[2].primitives[0].type = shape_msgs::msg::SolidPrimitive::BOX;
@@ -44,18 +44,18 @@ void generateCollisionEnviroment(moveit::planning_interface::PlanningSceneInterf
     collision_objects[2].primitive_poses[0].position.x = 0.0;
     collision_objects[2].primitive_poses[0].position.y = -1.0;
     collision_objects[2].primitive_poses[0].position.z = 0.072;
-    collision_objects[2].operation = moveit_msgs::msg::CollisionObject::ADD;
+    collision_objects[2].operation = moveit_msgs::msg::CollisionObject::ADD; */
 
     // Conveyor belt
     collision_objects[3].id = "conveyor_belt";
     collision_objects[3].header.frame_id = "world";
     collision_objects[3].primitives.resize(1);
     collision_objects[3].primitives[0].type = shape_msgs::msg::SolidPrimitive::BOX;
-    collision_objects[3].primitives[0].dimensions = {2, 0.6, 0.6};
+    collision_objects[3].primitives[0].dimensions = {2, 0.5, 0.5};
     collision_objects[3].primitive_poses.resize(1);
     collision_objects[3].primitive_poses[0].position.x = 1.7;
     collision_objects[3].primitive_poses[0].position.y = 0;
-    collision_objects[3].primitive_poses[0].position.z = 0.3;
+    collision_objects[3].primitive_poses[0].position.z = 0.25;
     collision_objects[3].operation = moveit_msgs::msg::CollisionObject::ADD;
 
     psi.applyCollisionObjects(collision_objects);

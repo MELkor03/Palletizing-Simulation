@@ -42,14 +42,14 @@ int main(int argc, char * argv[])
     geometry_msgs::msg::Pose pose;
     pose.position.x = 1.0;
     pose.position.y = 0.0;
-    pose.position.z = 0.65;
+    pose.position.z = 0.55;
 
     auto request = std::make_shared<gazebo_msgs::srv::SpawnEntity::Request>();
     auto palletization_request = std::make_shared<palletizing_robot_interfaces::srv::Palletization::Request>();
     request->xml = buffer.str();
     request->initial_pose = pose;
     
-    for(int i=0; i<36; i++){
+    for(int i=0; i<48; i++){
         std::string box_id = "Box_" + std::to_string(i + 1);
         collision_environment::addMoveitBox(planning_scene_interface, box_id, pose, {0.18, 0.28, 0.1});
 
@@ -73,8 +73,8 @@ int main(int argc, char * argv[])
             RCLCPP_ERROR(logger, "Faild pick place operation");
         }
         
-        if(i<2) { std::this_thread::sleep_for(std::chrono::seconds(3)); }
-    }
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    } 
 
     //collision_environment::addMoveitBox(planning_scene_interface, "Box_1", {1, 0, 0.65}, {0.2, 0.3, 0.1});
 

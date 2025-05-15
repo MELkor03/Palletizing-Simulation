@@ -26,43 +26,13 @@ int main(int argc, char * argv[])
   
   geometry_msgs::msg::Pose target_pose_1;
   target_pose_1.orientation.w = 1.0;
-  target_pose_1.position.x = 1.0;
-  target_pose_1.position.y = 0.0;
-  target_pose_1.position.z = 1.01;
-
-  geometry_msgs::msg::Pose target_pose_2;
-  target_pose_2.orientation.w = 1.0;
-  target_pose_2.position.x = 1.0;
-  target_pose_2.position.y = 0.0;
-  target_pose_2.position.z = 0.701;
-
-  geometry_msgs::msg::Pose target_pose_3;
-  target_pose_3.orientation.z = -0.7068252;
-  target_pose_3.orientation.w = 0.7073883;
-  target_pose_3.position.x = 0.0;
-  target_pose_3.position.y = -1.0;
-  target_pose_3.position.z = 0.54;
-
-  geometry_msgs::msg::Pose target_pose_4;
-  target_pose_4.orientation.z = -0.7068252;
-  target_pose_4.orientation.w = 0.7073883;
-  target_pose_3.position.x = 0.0;
-  target_pose_4.position.y = -1.0;
-  target_pose_4.position.z = 0.245;
+  target_pose_1.position.x = -0.5;
+  target_pose_1.position.y = -1.15;
+  target_pose_1.position.z = 0.244;
+  target_pose_1.orientation.z = -1.0;
+  target_pose_1.orientation.w = 0.0;
 
   robot_motion::moveInCartesianPath(move_group_interface, target_pose_1);
-  rclcpp::sleep_for(std::chrono::milliseconds(500));
-  robot_motion::moveInCartesianPath(move_group_interface, target_pose_2);
-  rclcpp::sleep_for(std::chrono::milliseconds(500));
-  robot_motion::moveInCartesianPath(move_group_interface, target_pose_1);
-  rclcpp::sleep_for(std::chrono::milliseconds(500));
-  robot_motion::moveInCartesianPath(move_group_interface, target_pose_3);
-  rclcpp::sleep_for(std::chrono::milliseconds(500));
-  robot_motion::moveInCartesianPath(move_group_interface, target_pose_4);
-  rclcpp::sleep_for(std::chrono::milliseconds(500));
-  robot_motion::moveInCartesianPath(move_group_interface, target_pose_3);
-  rclcpp::sleep_for(std::chrono::milliseconds(500));
-  robot_motion::moveToHome(move_group_interface);
 
   // psi, id, pose, dimensions
   //collision_environment::addMoveitBox(planning_scene_interface, "Box_1", {1, 0, 0.65}, {0.2, 0.3, 0.1});

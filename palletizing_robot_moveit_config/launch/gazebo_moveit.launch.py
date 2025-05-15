@@ -67,6 +67,7 @@ def generate_launch_description():
             moveit_config.robot_description_semantic,
             moveit_config.planning_pipelines,
             moveit_config.robot_description_kinematics,
+            {"use_sim_time": True},
         ],
     )
 
@@ -86,15 +87,18 @@ def generate_launch_description():
     controller_manager_node = Node(
         package='controller_manager',
         executable='ros2_control_node',
-        parameters=[moveit_config.robot_description, controller_file],
+        parameters=[moveit_config.robot_description, controller_file, {"use_sim_time": True}],
         output='screen',
         remappings=[("~/robot_description", "/robot_description")]
     )
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        output="screen",
-        parameters=[moveit_config.robot_description],
+        output="both",
+        parameters=[
+            moveit_config.robot_description,
+            {"use_sim_time": True},
+        ],
     )
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
@@ -138,6 +142,10 @@ def generate_launch_description():
             on_start=[rviz_node],
         )
     )
+    delayed_move_group = TimerAction(
+        period=5.0,
+        actions=[move_group_node],
+    )
 
     ld.add_action(x_arg)
     ld.add_action(y_arg)
@@ -146,7 +154,7 @@ def generate_launch_description():
     ld.add_action(controller_manager_node)
     ld.add_action(spawn_the_robot)
     ld.add_action(robot_state_publisher_node)
-    ld.add_action(move_group_node)
+    ld.add_action(delayed_move_group)
     ld.add_action(delay_joint_state_broadcaster)
     ld.add_action(delay_arm_controller)
     ld.add_action(delay_rviz_node)

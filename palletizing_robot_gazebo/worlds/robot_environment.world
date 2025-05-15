@@ -142,59 +142,6 @@
       </link>
       <pose>0.164569 -1.06886 0 0 -0 0</pose>
     </model>
-    <model name='euro_pallet_B'>
-      <static>true</static>
-      <link name='link'>
-        <pose>0 0 0 0 -0 0</pose>
-        <inertial>
-          <mass>20</mass>
-          <inertia>
-            <ixx>2.43</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1.1</iyy>
-            <iyz>0</iyz>
-            <izz>3.47</izz>
-          </inertia>
-          <pose>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <pose>0 0 0.05 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://euro_pallet/meshes/pallet.dae</uri>
-              <scale>0.1 0.1 0.1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <pose>0 0 0.05 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://euro_pallet/meshes/pallet.dae</uri>
-              <scale>0.1 0.1 0.1</scale>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose>-0.083158 1.54149 0 0 -0 0</pose>
-    </model>
     <model name='conveyor_belt'>
       <static>true</static>
       <link name='link_0'>
@@ -219,7 +166,7 @@
           <pose>0 0 0 0 -0 0</pose>
           <geometry>
             <box>
-              <size>2 0.6 0.6</size>
+              <size>2 0.5 0.5</size>
             </box>
           </geometry>
           <material>
@@ -245,7 +192,7 @@
           <pose>0 0 0 0 -0 0</pose>
           <geometry>
             <box>
-              <size>2 0.6 0.6</size>
+              <size>2 0.5 0.5</size>
             </box>
           </geometry>
           <surface>
@@ -305,33 +252,23 @@
       <wall_time>1741904497 798671503</wall_time>
       <iterations>1028055</iterations>
       <model name='conveyor_belt'>
-        <pose>1.7 -0 0.3 0 -0 0</pose>
+        <pose>1.7 -0 0.25 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link_0'>
-          <pose>1.7 -0 0.3 0 -0 0</pose>
+          <pose>1.7 -0 0.25 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 -0 0 0 -0 0</acceleration>
           <wrench>0 -0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='euro_pallet_A'>
-        <pose>0 -0.999999 0.071994 -0 2e-05 1.57</pose>
+        <pose>0 -0.8 0.071994 -0 2e-05 1.57</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>0 -0.999999 0.071994 -0 2e-05 1.57</pose>
+          <pose>0 -0.9 0.071994 -0 2e-05 1.57</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0.001815 1.55659 -5.42645 2.50673 0.032202 1e-06</acceleration>
           <wrench>0.036298 31.1318 -108.529 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='euro_pallet_B'>
-        <pose>0 1 0.071993 -0 2.3e-05 1.57</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose>0 1 0.071993 -0 2.3e-05 1.57</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0.00252 3.16314 -0.912712 -2.79979 0.0581 -0</acceleration>
-          <wrench>0.050409 63.2627 -18.2542 0 -0 0</wrench>
         </link>
       </model>
       <model name='ground_plane'>
